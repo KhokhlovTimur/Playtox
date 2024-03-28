@@ -1,5 +1,7 @@
 package service;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import model.Account;
 
 import java.util.ArrayList;
@@ -8,19 +10,14 @@ import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+@Slf4j
+@RequiredArgsConstructor
 public class App implements ExecutingService {
 
     private final MoneyService moneyService;
     private final int threadsCount;
     private final int accountsCount;
     private final int maxTransferAmount;
-
-    public App(MoneyService moneyService, int threadsCount, int accountsCount, int maxTransferAmount) {
-        this.moneyService = moneyService;
-        this.threadsCount = threadsCount;
-        this.accountsCount = accountsCount;
-        this.maxTransferAmount = maxTransferAmount;
-    }
 
     @Override
     public void start() {
@@ -40,8 +37,8 @@ public class App implements ExecutingService {
                                 moneyService.transferMoney(accounts.get(finalAccNum), accounts.get(finalAccNum + 1),
                                         random.nextInt(maxTransferAmount) + 1);
                             }
-                        } catch (InterruptedException ignored) {
-
+                        } catch (InterruptedException e) {
+                            log.error(String.format("Can't transfer money from %s to %s", finalAccNum, finalAccNum + 1));
                         }
                     }
             );
