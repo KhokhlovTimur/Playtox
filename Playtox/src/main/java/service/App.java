@@ -59,12 +59,5 @@ public class App implements ExecutingService {
         return accounts;
     }
 
-    private static class TransferRunnable implements Runnable {
-        @Override
-        public void run() {
-
-        }
-    }
-
 }
 
